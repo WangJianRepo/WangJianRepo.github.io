@@ -7,7 +7,7 @@ comments: true
 ---
 
 ![I_P_and_B_frames](https://upload.wikimedia.org/wikipedia/commons/6/64/I_P_and_B_frames.svg "A sequence of video frames, consisting of two keyframes (I), one forward-predicted frame (P) and one bi-directionally predicted frame (B).
-"){: .pull-right}
+")
 
 ## 参考引用
 
