@@ -49,8 +49,13 @@ av_free_packet(&avpkt);
 * [FFMPEG Tips (3) 如何读取每一帧的信息](http://ticktick.blog.51cto.com/823160/1872008)  
 * [ffmpeg解码流程及解码跟踪和关键问题解析](http://blog.csdn.net/heng615975867/article/details/21602745)  
 * [ffmpeg如何提取视频的关键帧？](http://www.dewen.net.cn/q/725/ffmpeg%E5%A6%82%E4%BD%95%E6%8F%90%E5%8F%96%E8%A7%86%E9%A2%91%E7%9A%84%E5%85%B3%E9%94%AE%E5%B8%A7%EF%BC%9F)  
+* [FFmpeg 入门(1)：截取视频帧](http://www.samirchen.com/ffmpeg-tutorial-1/)  
 * [FFmpeg Here is a list of all examples](https://ffmpeg.org/doxygen/trunk/examples.html) 
-* [filtering_video.c](https://ffmpeg.org/doxygen/trunk/filtering_video_8c-example.html)
+* [filtering_video.c](https://ffmpeg.org/doxygen/trunk/filtering_video_8c-example.html)  
+* [FFmpeg源代码结构图 - 解码](http://blog.csdn.net/leixiaohua1020/article/details/44220151)  
+* [ffmpeg 源代码简单分析 ： av_read_frame()](http://blog.csdn.net/leixiaohua1020/article/details/12678577)  
+* [av_read_frame读出的视频流数据在AVPacket中的存储](http://blog.csdn.net/dancing_night/article/details/45742905)  
+
 
 
 
