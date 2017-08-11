@@ -17,7 +17,7 @@ comments: true
 
 AVPacket avpkt;
 av_init_packet(&avpkt);
- 
+
 while (true) {
   //解封装
   int ret = av_read_frame(pFormatCtx, &avpkt);
@@ -28,19 +28,20 @@ while (true) {
   int video_stream_idx = av_find_best_stream(pFormatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
   if (avpkt.stream_index == video_stream_idx) {
     LOGD("read a video frame");
-	// 判断是否为关键帧
+    // 判断是否为关键帧
     // 方法1：通过包标志位判断
     if (avpkt.flags & AV_PKT_FLAG_KEY) {
-		LOGD("read a key frame");
+      LOGD("read a key frame");
     }
     // 方法2：通过解码后帧类型判断
     avcodec_decode_video(pCodecCtx, pFrame, &frameFinished, avpkt.data, avpkt.size);
-	if(frameFinished)
-	{
-	  if(pFrame->key_frame==1) // 这就是关键帧
-	  {}
+    if(frameFinished)
+    {
+      if(pFrame->key_frame==1) // 这就是关键帧
+      {}
     }
 }
+
 av_free_packet(&avpkt);
 
 {% endhighlight %}
