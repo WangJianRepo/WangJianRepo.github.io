@@ -1,10 +1,26 @@
 ---
 layout: post
-title: 基于压缩域的视频关键帧提取
-excerpt: "在压缩域中提取视频I帧作为关键帧, 可用于视频关键帧提取、视频拷贝检测、视频检索等应用中."
-categories: [video compression, key frame extraction]
+title: 视频压缩域中的帧类型与应用
+excerpt: "本文介绍了帧类型，并提出基于I帧定位镜头关键帧，同时给出了基于FFMPEG的实现代码。"
+categories: [video compression, key frame extraction, video sampling]
 comments: true
 ---
+
+## 引言
+由于视频相关项目需要，最近需要研究不考虑音频的大规模视频的采样策略。因此，采样策略的有两个基本要求：  
+* 代表性强：采样结果能够表征原始视频的主要内容，即采样结果是该视频的主要成分，尽可能去除无用信息
+* 速度快：采样速度要尽可能的快，即消耗资源少，才能快速处理大规模视频
+
+比较直接的方法就是先做基于帧间差的镜头分割，在每个镜头中取代表帧，从所有镜头的中取出的代表帧作为最终的采样结果。这个方法的优点是简单，容易实现；缺点也显而易见：  
+* 阈值不好确定：分割镜头的帧间差阈值不好确定
+* 大量重复帧：镜头中的代表帧会有大量重复
+* 速度过慢：由于该方法需要解码大量的视频帧，并做帧间差，耗时耗资源，在实际工程应用中基本不可用。
+
+需要大量解码，是导致速度慢的主要原因，现有大部分视频采样方法的痛点。既然视频要解码，那么为什么要对视频编码？编码即压缩，解码即解压缩，如果不压缩，视频占用空间太大。那视频是怎么压缩法？能否在压缩上找线索，寻找采样策略？能否不解码找到镜头分割点，进而找到关键帧？
+
+## 视频编解码
+
+压缩域中，帧通常分为I帧、P帧和B帧。其中，I帧作为关键帧, 可用于视频关键帧提取、视频拷贝检测、视频检索等应用中。
 
 ![I_P_and_B_frames](https://upload.wikimedia.org/wikipedia/commons/6/64/I_P_and_B_frames.svg "A sequence of video frames, consisting of two keyframes (I), one forward-predicted frame (P) and one bi-directionally predicted frame (B).
 ")
