@@ -307,8 +307,8 @@ extern "C" {
 
 ## 参考引用
 **视频压缩相关**  
-* [Video compression picture types](https://en.wikipedia.org/wiki/Video_compression_picture_types)  #
-* [H.264码流以及H.264编解码的基本概念](https://maxwellqi.github.io/ios-h264-summ/)  #
+* [Video compression picture types](https://en.wikipedia.org/wiki/Video_compression_picture_types)  
+* [H.264码流以及H.264编解码的基本概念](https://maxwellqi.github.io/ios-h264-summ/)  
 * [视频格式那么多，MP4/RMVB/MKV/AVI 等，这些视频格式与编码压缩标准 mpeg4，H.264.H.265 等有什么关系？](https://www.zhihu.com/question/20997688) 
 
 **FFMPEG解码相关**  
