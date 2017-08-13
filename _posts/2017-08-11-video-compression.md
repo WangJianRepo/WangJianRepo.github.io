@@ -63,7 +63,7 @@ emsp;&emsp;一个序列就是一段内容差异不太大的图像编码后生成
 
 * 帧内编码帧 又称intra picture，I 帧通常是每个 GOP（MPEG 所使用的一种视频压缩技术）的第一个帧，经过适度地压缩，做为随机访问的参考点，可以当成图象。I帧可以看成是一个图像经过压缩后的产物。
 
-**I帧的特点：**
+I帧的特点：
 
 * 它是一个全帧压缩编码帧。它将全帧图像信息进行JPEG压缩编码及传输  
 * 解码时仅用I帧的数据就可重构完整图像  
@@ -83,7 +83,7 @@ emsp;&emsp;一个序列就是一段内容差异不太大的图像编码后生成
 
 &emsp;&emsp;P帧的预测与重构：P帧是以I帧为参考帧,在I帧中找出P帧“某点”的预测值和运动矢量,取预测差值和运动矢量一起传送。在接收端根据运动矢量从I帧中找出P帧“某点”的预测值并与差值相加以得到P帧“某点”样值,从而可得到完整的P帧。
 
-**P帧特点:**
+P帧特点:
 
 * P帧是I帧后面相隔1~2帧的编码帧
 * P帧采用运动补偿的方法传送它与前面的I或P帧的差值及运动矢量(预测误差)
@@ -103,7 +103,7 @@ emsp;&emsp;一个序列就是一段内容差异不太大的图像编码后生成
 
 B帧的预测与重构：B帧以前面的I或P帧和后面的P帧为参考帧,“找出”B帧“某点”的预测值和两个运动矢量,并取预测差值和运动矢量传送。接收端根据运动矢量在两个参考帧中“找出(算出)”预测值并与差值求和,得到B帧“某点”样值,从而可得到完整的B帧。
 
-**B帧的特点：**
+B帧的特点：
 
 * B帧是由前面的I或P帧和后面的P帧来进行预测的
 * B帧传送的是它与前面的I或P帧和后面的P帧之间的预测误差及运动矢量
@@ -126,7 +126,7 @@ B帧的预测与重构：B帧以前面的I或P帧和后面的P帧为参考帧,�
 
 &emsp;&emsp;那么，问题最终缩小为：寻找视频中的I帧。下面将介绍如何利用FFMPEG定位视频中的I帧，以及如何不对视频解码定位I帧。
 
-### FFMPEG命令输出I帧
+#### FFMPEG命令输出I帧
 
 &emsp;&emsp;FFMPEG命令过滤I帧命令：参考[Escaping characters](https://trac.ffmpeg.org/wiki/FilteringGuide#Escapingcharacters)
 
@@ -141,7 +141,7 @@ ffmpeg -i input -vf select='eq(pict_type\,I)' -vsync vfr output_%04d.png        
 
 &emsp;&emsp;看了[FFMPEG Tips (3) 如何读取每一帧的信息](http://ticktick.blog.51cto.com/823160/1872008) 和 [ffmpeg如何提取视频的关键帧？](http://www.dewen.net.cn/q/725/ffmpeg%E5%A6%82%E4%BD%95%E6%8F%90%E5%8F%96%E8%A7%86%E9%A2%91%E7%9A%84%E5%85%B3%E9%94%AE%E5%B8%A7%EF%BC%9F) 两篇文章后，基本验证可行性。
 
-### 非解码方法定位I帧
+#### 非解码方法定位I帧
 
 &emsp;&emsp;在上面两篇博客中，可以发现，在解码之前的步骤int ret = av_read_frame(fmt_ctx, &packet)中，通过判断包的flag就可以判断帧是否是关键帧了([av_read_frame读出的视频流数据在AVPacket中的存储](http://blog.csdn.net/dancing_night/article/details/45742905))，此方法可以省去解码过程。参考[filtering_video.c](https://ffmpeg.org/doxygen/trunk/filtering_video_8c-example.html)写出如下代码：
 
@@ -287,16 +287,16 @@ extern "C" {
 &emsp;&emsp;经粗略实验，24min的1080p，25fps的Mp4视频，此方法可以秒出结果。
 
 ### 讨论
-#### 进一步加速
+**进一步加速** 
 &emsp;&emsp;上面在解封装后，直接根据packet的flag属性判断是否是关键帧，能够避免解码操作，速度大幅提升。需要注意的是，packet还有一个属性data，存放着未解码的视频内容，因此，可以取消复制这些数据，减少IO，进一步加快速度，但对速度的提升效果如何，需要进一步尝试。粗略定了一下位置，基本可以从此入手优化该点：[memcpy(dst_data, src_sd->data, src_sd->size);](https://github.com/FFmpeg/FFmpeg/blob/949debd1d1df3a96315b3a3083831162845c1188/libavformat/utils.c#L1674)
 
-#### 关键帧的选取
+**关键帧的选取**  
 &emsp;&emsp;前面说到，将I帧作为关键帧。但是由于I帧有是一个序列中的第一帧，且当该序列是渐变效果，如从物体轮廓图像慢慢出现清晰的物体，这时候I帧代表性不强，越往后，帧代表性越强。这种情况下，选取后面的P帧或者B帧效果看起来会更好。但是会带来两个问题：
 
 * 选择第几个P帧或B帧好？
 * 无论选择P帧还是B帧，都需要从最近的I帧解码到该P帧或B帧，带来耗时的解码操作。
 
-#### 重复的I帧
+**重复的I帧**  
 &emsp;&emsp;几次实验后，发现.mp4视频I帧提取效果较好，连续的I帧内容相似的数量较少。但是.avi视频则效果较差，连续的I帧内容相似的数量较多。比如，实验中用了一个69000多帧.mp4格式的视频，I帧数量为660左右，将其转码为.avi后，I帧数量为6900左右。查看实际图像后发现，.avi中有大量的内容相似的I帧，当然，这些I帧时间接近。
 &emsp;&emsp;在一些应用上，如视频拷贝检测或者视频检索，关键帧的数量直接决定了检测和检索速度。因此，在提取出I帧后，在所有I帧上进一步减少相似帧，能够进一步减少关键帧的数量。
 
@@ -304,11 +304,12 @@ extern "C" {
 &emsp;&emsp;视频采样可以作为视频拷贝检测、视频检索等应用中对视频降维的有效手段。本文从视频采样实际需求出发，对视频的编解码结束做了简要介绍，介绍了I帧、P帧和B帧，提出将I帧的位置作为镜头分割点，I帧作为镜头关键帧；然后，给出了利用FFMPEG在解码和非解码的情况下提取I帧的方法；最后对该方法做了进一步的讨论。欢迎大家在页面下方进行讨论。
 
 ## 参考引用
-### 视频压缩相关
+**视频压缩相关**  
 * [Video compression picture types](https://en.wikipedia.org/wiki/Video_compression_picture_types)  #
 * [H.264码流以及H.264编解码的基本概念](https://maxwellqi.github.io/ios-h264-summ/)  #
 * [视频格式那么多，MP4/RMVB/MKV/AVI 等，这些视频格式与编码压缩标准 mpeg4，H.264.H.265 等有什么关系？](https://www.zhihu.com/question/20997688) 
-### FFMPEG解码相关
+
+**FFMPEG解码相关**  
 * [FFMPEG Tips (3) 如何读取每一帧的信息](http://ticktick.blog.51cto.com/823160/1872008)  
 * [ffmpeg解码流程及解码跟踪和关键问题解析](http://blog.csdn.net/heng615975867/article/details/21602745)  
 * [ffmpeg如何提取视频的关键帧？](http://www.dewen.net.cn/q/725/ffmpeg%E5%A6%82%E4%BD%95%E6%8F%90%E5%8F%96%E8%A7%86%E9%A2%91%E7%9A%84%E5%85%B3%E9%94%AE%E5%B8%A7%EF%BC%9F)  
