@@ -20,6 +20,10 @@ cv::Mat img_bgr, img_gray;
 cv::cvtColor(img_bgr, img_gray, cv::COLOR_BGR2GRAY);
 {% endhighlight %}
 
+* 效果图
+
+![img-binary](/img/201708-30-img-gray.jpg "img-binary" =320)
+
 
 ### 1.2 二值化
 * 代码 
@@ -31,8 +35,9 @@ cv::Scalar thd = cv::mean(img_gray);	// 阈值设置
 cv::threshold(img_gray, img_binary, thd[0], 255, THRESH_BINARY);
 {% endhighlight %}
 
-* 效果图 
-![img-binary](/img/201708-30-img-binary.jpg "img-binary")
+* 效果图
+
+![img-binary](/img/201708-30-img-binary.jpg "img-binary" =320)
 
 ## 2 形态学图像处理
 ### 2.1 腐蚀与膨胀
@@ -46,7 +51,8 @@ cv::erode(img_binary, img_dilate, element);	// 膨胀
 {% endhighlight %}
 
 * 效果图 
-![img-erode](/img/201708-30-img-erode.jpg "img-erode")
+
+![img-erode](/img/201708-30-img-erode.jpg "img-erode" =320)
 
 
 ### 2.2 孔洞填充 
@@ -70,7 +76,8 @@ Mat im_out = (img_binary | im_floodfill_inv);	// 保留不同处
 {% endhighlight %}
 
 * 效果图 
-![img-hole-filling](/img/201708-30-img-hole-filling.jpg "img-hole-filling")
+
+![img-hole-filling](/img/201708-30-img-hole-filling.jpg "img-hole-filling" =320)
 
 
 ### 2.3 边界提取
@@ -106,7 +113,8 @@ cv::Rect maxRect = cv::boundingRect(contours[max_contour_ind]);
 {% endhighlight %}
 
 * 效果图 
-![img-boundary](/img/201708-30-img-boundary.jpg "img-boundary")
+
+![img-boundary](/img/201708-30-img-boundary.jpg "img-boundary" =320)
 
 
 ### 参考引用 
