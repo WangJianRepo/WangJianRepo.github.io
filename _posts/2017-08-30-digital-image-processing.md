@@ -37,7 +37,7 @@ cv::threshold(img_gray, img_binary, thd[0], 255, THRESH_BINARY);
 
 * 效果图
 
-![img-binary](/img/201708-30-img-binary.jpg "img-binary" =320)
+![img-binary](/img/201708-30-img-binary.jpg =409x320)
 
 ## 2 形态学图像处理
 ### 2.1 腐蚀与膨胀
@@ -52,7 +52,7 @@ cv::erode(img_binary, img_dilate, element);	// 膨胀
 
 * 效果图 
 
-![img-erode](/img/201708-30-img-erode.jpg "img-erode" =320)
+![img-erode](/img/201708-30-img-erode.jpg "img-erode" =409x320)
 
 
 ### 2.2 孔洞填充 
@@ -77,7 +77,7 @@ Mat im_out = (img_binary | im_floodfill_inv);	// 保留不同处
 
 * 效果图 
 
-![img-hole-filling](/img/201708-30-img-hole-filling.jpg "img-hole-filling" =320)
+![img-hole-filling](/img/201708-30-img-hole-filling.jpg "img-hole-filling" =409x320)
 
 
 ### 2.3 边界提取
@@ -114,7 +114,7 @@ cv::Rect maxRect = cv::boundingRect(contours[max_contour_ind]);
 
 * 效果图 
 
-![img-boundary](/img/201708-30-img-boundary.jpg "img-boundary" =320)
+![img-boundary](/img/201708-30-img-boundary.jpg "img-boundary" =409x320)
 
 
 ### 参考引用 
